@@ -1,0 +1,6 @@
+# Intellij
+.idea/
+
+# VSCODE
+.vscode
+__debug_bin
