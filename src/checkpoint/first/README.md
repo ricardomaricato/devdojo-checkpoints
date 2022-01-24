@@ -6,7 +6,7 @@ Differently from coding challenges available on different websites, the problems
 
 Each checkpoint will be built on top of each other. Meaning, if you do not code properly this challenge, in the next one there is a chance you will have to properly fix your code before continuing.
 
-At checkpoint.first glance the checkpoints will appear very detailed, but there are decisions you will have to make that are not described explicitly.
+At first glance the checkpoints will appear very detailed, but there are decisions you will have to make that are not described explicitly.
 This is part of a developer's daily life. It is your job to make these decisions and explain pros, cons, what made you take the way you chose to solve the problem, and what other ways you had.
 
 Do your best, we guarantee that the concepts you must use here were already covered in the courses.
@@ -39,7 +39,7 @@ checkpoint.first. Create a class called checkpoint.first.Application
 3. Create a menu where it shows the automaker list enumerated that keeps alive until the user selects an exit point, for example:
 
 ```text 
-checkpoint.first - GM
+1 - GM
 2 - Hyundai
 ...
 0 - Exit
@@ -60,7 +60,7 @@ Silverado
 ```text
 Do you wish to continue?
 0 - No
-checkpoint.first - Yes
+1 - Yes
 ```
 
 Don't forget to validation checks where necessary.

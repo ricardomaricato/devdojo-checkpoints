@@ -54,10 +54,9 @@ public class VehicleTest {
 
 		VehicleService vehicleService = new VehicleService();
 		Vehicle[] automaker = vehicleService.searchByAutomaker(vehicles, "Mercedes");
+		System.out.println("Mercedes");
 		for (Vehicle vehicle : automaker) {
-			if (vehicle.getAutomaker().getName() != null) {
-				System.out.println(vehicle.getAutomaker().getName());
-			}
+				System.out.println(vehicle.getModel());
 		}
 	}
 }

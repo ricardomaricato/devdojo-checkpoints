@@ -8,13 +8,13 @@ public class VehicleService {
 //	private final VehicleRepository vehicleRepository;
 
 	public Vehicle[] searchByAutomaker(Vehicle[] vehicles, String name) {
-		Vehicle[] newVehicles = new Vehicle[18];
+		Vehicle[] newVehicles = new Vehicle[3];
 		int i = 0;
 		for (Vehicle vehicle : vehicles) {
 			if (vehicle.getAutomaker().getName().equals(name)) {
 				newVehicles[i] = vehicle;
+				i++;
 			}
-			i++;
 		}
 		return newVehicles;
 	}
