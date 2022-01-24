@@ -1,3 +1,5 @@
+package checkpoint.first;
+
 import java.util.Scanner;
 
 public class Application {
@@ -25,7 +27,7 @@ public class Application {
 			int selectedNumber = in.nextInt();
 			if (selectedNumber < 0 || selectedNumber > 6) {
 				System.out.println("Input not allowed!");
-				return;
+				continue;
 			}
 
 			if (selectedNumber == 0)
