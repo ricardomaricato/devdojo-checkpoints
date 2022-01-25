@@ -5,7 +5,7 @@ import checkpoint.second.repository.VehicleRepository;
 
 public class VehicleService {
 
-//	private final VehicleRepository vehicleRepository;
+	private final VehicleRepository vehicleRepository;
 
 	public Vehicle[] searchByAutomaker(Vehicle[] vehicles, String name) {
 		Vehicle[] newVehicles = new Vehicle[3];
@@ -19,7 +19,7 @@ public class VehicleService {
 		return newVehicles;
 	}
 
-//	public VehicleService(VehicleRepository vehicleRepository) {
-//		this.vehicleRepository = vehicleRepository;
-//	}
+	public VehicleService(VehicleRepository vehicleRepository) {
+		this.vehicleRepository = vehicleRepository;
+	}
 }
