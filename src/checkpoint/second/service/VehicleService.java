@@ -32,13 +32,13 @@ public class VehicleService {
 
 	public Vehicle[] addVehicle(Vehicle[] vehicles, Vehicle vehicle) {
 		int n = vehicles.length;
-		Vehicle[] newArray = new Vehicle[n + 1];
+		Vehicle[] newVehicles = new Vehicle[n + 1];
 		for (int i = 0; i < n; i++) {
-			newArray[i] = vehicles[i];
+			newVehicles[i] = vehicles[i];
 		}
-		newArray[n] = vehicle;
+		newVehicles[n] = vehicle;
 
-		return newArray;
+		return newVehicles;
 	}
 
 	public VehicleService(VehicleRepository vehicleRepository) {
