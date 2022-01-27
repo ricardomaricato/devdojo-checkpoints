@@ -4,6 +4,7 @@ import checkpoint.second.model.Automaker;
 import checkpoint.second.model.Vehicle;
 import checkpoint.second.repository.VehicleRepository;
 import checkpoint.second.service.VehicleService;
+import checkpoint.second.validation.AutomakerValidation;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -108,6 +109,9 @@ public class Application {
 					String newYear = in.nextLine();
 					System.out.println("Automaker: ");
 					String newAutomaker = in.nextLine();
+
+					 if (!AutomakerValidation.isValid(automakers, newAutomaker))
+						 System.out.println("Automaker invalid!");
 
 					Automaker automaker = new Automaker(newAutomaker);
 					Vehicle vehicle = new Vehicle(newModel, newColor, newYear, automaker);
