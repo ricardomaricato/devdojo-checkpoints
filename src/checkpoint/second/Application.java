@@ -84,16 +84,15 @@ public class Application {
 
 					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicleRepository.getVehicles(), automakerSelected);
 					for (Vehicle vehicle : vehicleSelected) {
-						if (Objects.isNull(vehicle)) {
+						if (Objects.isNull(vehicle))
 							break;
-						}
+
 						System.out.println(vehicle.getModel());
 					}
 					continue;
 				case 2:
-					for (Vehicle vehicle : vehicleRepository.getVehicles()) {
+					for (Vehicle vehicle : vehicleRepository.getVehicles())
 						System.out.println(vehicle.getModel());
-					}
 
 					in.nextLine();
 					String model = in.nextLine();
