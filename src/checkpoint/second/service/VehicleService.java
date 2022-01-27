@@ -5,8 +5,6 @@ import checkpoint.second.repository.VehicleRepository;
 
 public class VehicleService {
 
-	private final VehicleRepository vehicleRepository;
-
 	public Vehicle[] searchByAutomaker(Vehicle[] vehicles, String name) {
 		Vehicle[] newVehicles = new Vehicle[3];
 		int i = 0;
@@ -19,7 +17,19 @@ public class VehicleService {
 		return newVehicles;
 	}
 
+	public Vehicle searchByModel(Vehicle[] vehicles, String model) {
+		Vehicle newVehicle = new Vehicle();
+		for (Vehicle vehicle : vehicles) {
+			if (vehicle.getModel().equalsIgnoreCase(model)) {
+				newVehicle.setModel(vehicle.getModel());
+				newVehicle.setColor(vehicle.getColor());
+				newVehicle.setYear(vehicle.getYear());
+				newVehicle.setAutomaker(vehicle.getAutomaker());
+			}
+		}
+		return newVehicle;
+	}
+
 	public VehicleService(VehicleRepository vehicleRepository) {
-		this.vehicleRepository = vehicleRepository;
 	}
 }

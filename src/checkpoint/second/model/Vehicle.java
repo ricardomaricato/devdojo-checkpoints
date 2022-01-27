@@ -11,6 +11,9 @@ public class Vehicle {
 		System.out.println(this);
 	}
 
+	public Vehicle() {
+	}
+
 	public Vehicle(String model, String color, String year, Automaker automaker) {
 		this.model = model;
 		this.color = color;

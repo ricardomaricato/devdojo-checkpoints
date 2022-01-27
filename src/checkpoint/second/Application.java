@@ -52,33 +52,50 @@ public class Application {
 		while (true) {
 
 			System.out.println("1 - Search by automaker");
+			System.out.println("2 - Search by model");
 			System.out.println("0 - Exit");
 
 			Scanner in = new Scanner(System.in);
 			int selectedNumber = in.nextInt();
-			if (selectedNumber < 0 || selectedNumber > 1) {
+			if (selectedNumber < 0 || selectedNumber > 2) {
 				System.out.println("Input not allowed!");
 				continue;
 			}
 
-			if (selectedNumber == 0)
-				break;
+//			if (selectedNumber == 0)
+//				break;
 
-			int index = 1;
-			for (int i = 0; i < automakers.length; i++) {
-				System.out.printf("%d - %s\n", index, automakers[i].getName());
-				index++;
-			}
+			switch (selectedNumber) {
+				case 0:
+					break;
+				case 1:
+					int index = 1;
+					for (Automaker automaker : automakers) {
+						System.out.printf("%d - %s\n", index, automaker.getName());
+						index++;
+					}
+					int selectedAutomaker = in.nextInt();
+					System.out.println("Available vehicles:");
 
-			int selectedAutomaker = in.nextInt();
-			System.out.println("Available vehicles:");
+					String automakerSelected = automakers[selectedAutomaker - 1].getName();
+					System.out.println(automakerSelected);
 
-			String automakerSelected = automakers[selectedAutomaker - 1].getName();
-			System.out.println(automakerSelected);
+					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicles, automakerSelected);
+					for (Vehicle vehicle : vehicleSelected) {
+						System.out.println(vehicle.getModel());
+					}
+					continue;
+				case 2:
+					for (Vehicle vehicle : vehicles) {
+						System.out.println(vehicle.getModel());
+					}
 
-			Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicles, automakerSelected);
-			for (Vehicle vehicle : vehicleSelected) {
-				System.out.println(vehicle.getModel());
+					in.nextLine();
+					String model = in.nextLine();
+					System.out.println(vehicleService.searchByModel(vehicles, model).toString());
+					continue;
+				default:
+					throw new IllegalStateException("Unexpected value: " + selectedNumber);
 			}
 
 			System.out.println("Do you wish to continue?");
