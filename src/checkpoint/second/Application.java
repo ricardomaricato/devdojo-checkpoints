@@ -5,6 +5,7 @@ import checkpoint.second.model.Vehicle;
 import checkpoint.second.repository.VehicleRepository;
 import checkpoint.second.service.VehicleService;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Application {
@@ -53,17 +54,18 @@ public class Application {
 
 			System.out.println("1 - Search by automaker");
 			System.out.println("2 - Search by model");
+			System.out.println("3 - Add vehicle");
 			System.out.println("0 - Exit");
 
 			Scanner in = new Scanner(System.in);
 			int selectedNumber = in.nextInt();
-			if (selectedNumber < 0 || selectedNumber > 2) {
+			if (selectedNumber < 0 || selectedNumber > 3) {
 				System.out.println("Input not allowed!");
 				continue;
 			}
 
-//			if (selectedNumber == 0)
-//				break;
+			if (selectedNumber == 0)
+				break;
 
 			switch (selectedNumber) {
 				case 0:
@@ -80,19 +82,37 @@ public class Application {
 					String automakerSelected = automakers[selectedAutomaker - 1].getName();
 					System.out.println(automakerSelected);
 
-					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicles, automakerSelected);
+					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicleRepository.getVehicles(), automakerSelected);
 					for (Vehicle vehicle : vehicleSelected) {
+						if (Objects.isNull(vehicle)) {
+							break;
+						}
 						System.out.println(vehicle.getModel());
 					}
 					continue;
 				case 2:
-					for (Vehicle vehicle : vehicles) {
+					for (Vehicle vehicle : vehicleRepository.getVehicles()) {
 						System.out.println(vehicle.getModel());
 					}
 
 					in.nextLine();
 					String model = in.nextLine();
-					System.out.println(vehicleService.searchByModel(vehicles, model).toString());
+					System.out.println(vehicleService.searchByModel(vehicleRepository.getVehicles(), model).toString());
+					continue;
+				case 3:
+					in.nextLine();
+					System.out.println("Model: ");
+					String newModel = in.nextLine();
+					System.out.println("Color: ");
+					String newColor = in.nextLine();
+					System.out.println("Year: ");
+					String newYear = in.nextLine();
+					System.out.println("Automaker: ");
+					String newAutomaker = in.nextLine();
+
+					Automaker automaker = new Automaker(newAutomaker);
+					Vehicle vehicle = new Vehicle(newModel, newColor, newYear, automaker);
+					vehicleRepository.setVehicles(vehicleService.addVehicle(vehicles, vehicle));
 					continue;
 				default:
 					throw new IllegalStateException("Unexpected value: " + selectedNumber);
