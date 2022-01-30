@@ -56,11 +56,13 @@ public class Application {
 			System.out.println("1 - Search by automaker");
 			System.out.println("2 - Search by model");
 			System.out.println("3 - Add vehicle");
+			System.out.println("4 - Update vehicle");
+			System.out.println("5 - Delete vehicle");
 			System.out.println("0 - Exit");
 
 			Scanner in = new Scanner(System.in);
 			int selectedNumber = in.nextInt();
-			if (selectedNumber < 0 || selectedNumber > 3) {
+			if (selectedNumber < 0 || selectedNumber > 5) {
 				System.out.println("Input not allowed!");
 				continue;
 			}
@@ -72,50 +74,64 @@ public class Application {
 				case 0:
 					break;
 				case 1:
-					int index = 1;
-					for (Automaker automaker : automakers) {
-						System.out.printf("%d - %s\n", index, automaker.getName());
-						index++;
-					}
+					vehicleService.printAutomakerName(automakers);
+
 					int selectedAutomaker = in.nextInt();
 					System.out.println("Available vehicles:");
-
 					String automakerSelected = automakers[selectedAutomaker - 1].getName();
 					System.out.println(automakerSelected);
 
 					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicleRepository.getVehicles(), automakerSelected);
-					for (Vehicle vehicle : vehicleSelected) {
-						if (Objects.isNull(vehicle))
-							break;
-
-						System.out.println(vehicle.getModel());
-					}
+					vehicleService.printVehicleModel(vehicleSelected);
 					continue;
 				case 2:
-					for (Vehicle vehicle : vehicleRepository.getVehicles())
-						System.out.println(vehicle.getModel());
+					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
 
 					in.nextLine();
-					String model = in.nextLine();
-					System.out.println(vehicleService.searchByModel(vehicleRepository.getVehicles(), model).toString());
+					String modelToSearch = in.nextLine();
+					Vehicle vehicleModelSearched = vehicleService.searchByModel(vehicleRepository.getVehicles(), modelToSearch);
+
+					if (Objects.isNull(vehicleModelSearched)) {
+						System.out.println("Vehicle not found!");
+						break;
+					}
+
+					vehicleModelSearched.prettyPrint();
 					continue;
 				case 3:
+					Vehicle newVehicle = vehicleService.getNewVehicleToAdd();
+
+					if (!AutomakerValidation.isValid(automakers, newVehicle.getAutomaker().getName())) {
+						System.out.println("Automaker invalid!");
+						break;
+					}
+
+					vehicleRepository.setVehicles(vehicleService.addVehicle(vehicles, newVehicle));
+					continue;
+				case 4:
+					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
+
 					in.nextLine();
-					System.out.println("Model: ");
-					String newModel = in.nextLine();
-					System.out.println("Color: ");
-					String newColor = in.nextLine();
-					System.out.println("Year: ");
-					String newYear = in.nextLine();
-					System.out.println("Automaker: ");
-					String newAutomaker = in.nextLine();
+					String modelToUpdate = in.nextLine();
+					Vehicle searchVehicle = vehicleService.searchByModel(vehicleRepository.getVehicles(), modelToUpdate);
 
-					 if (!AutomakerValidation.isValid(automakers, newAutomaker))
-						 System.out.println("Automaker invalid!");
+					if (Objects.isNull(searchVehicle)) {
+						System.out.println("Vehicle not found!");
+						break;
+					}
 
-					Automaker automaker = new Automaker(newAutomaker);
-					Vehicle vehicle = new Vehicle(newModel, newColor, newYear, automaker);
-					vehicleRepository.setVehicles(vehicleService.addVehicle(vehicles, vehicle));
+					searchVehicle.prettyPrint();
+					Vehicle newVehicleToUpdate = vehicleService.getNewVehicleToUpdate(searchVehicle);
+					vehicleService.updateVehicle(vehicleRepository.getVehicles(), newVehicleToUpdate);
+					continue;
+				case 5:
+					vehicleService.printVehicleModel(vehicles);
+					System.out.println("Which vehicle do you want to delete?");
+
+					in.nextLine();
+					String modelToDelete = in.nextLine();
+					int position = vehicleService.getPosition(vehicleRepository.getVehicles(), modelToDelete);
+					vehicleService.deleteVehicleByModel(vehicleRepository.getVehicles(), position);
 					continue;
 				default:
 					throw new IllegalStateException("Unexpected value: " + selectedNumber);
