@@ -125,13 +125,14 @@ public class Application {
 					vehicleService.updateVehicle(vehicleRepository.getVehicles(), newVehicleToUpdate);
 					continue;
 				case 5:
-					vehicleService.printVehicleModel(vehicles);
+					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
 					System.out.println("Which vehicle do you want to delete?");
 
 					in.nextLine();
 					String modelToDelete = in.nextLine();
 					int position = vehicleService.getPosition(vehicleRepository.getVehicles(), modelToDelete);
-					vehicleService.deleteVehicleByModel(vehicleRepository.getVehicles(), position);
+					Vehicle[] vehicleUpdate = vehicleService.deleteVehicleByModel(vehicleRepository.getVehicles(), position);
+					vehicleRepository.setVehicles(vehicleUpdate);
 					continue;
 				default:
 					throw new IllegalStateException("Unexpected value: " + selectedNumber);
