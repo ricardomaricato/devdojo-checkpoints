@@ -91,7 +91,7 @@ public class Application {
 					String modelToSearch = in.nextLine();
 					Vehicle vehicleModelSearched = vehicleService.searchByModel(vehicleRepository.getVehicles(), modelToSearch);
 
-					if (Objects.isNull(vehicleModelSearched)) {
+					if (Objects.isNull(vehicleModelSearched.getModel())) {
 						System.out.println("Vehicle not found!");
 						break;
 					}

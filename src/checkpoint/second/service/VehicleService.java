@@ -36,7 +36,7 @@ public class VehicleService {
 
 	public Vehicle[] addVehicle(Vehicle[] vehicles, Vehicle vehicle) {
 		Vehicle checkByModel = searchByModel(vehicles, vehicle.getModel());
-		if (Objects.nonNull(checkByModel)) {
+		if (Objects.nonNull(checkByModel.getModel())) {
 			throw new IllegalArgumentException("This vehicle model already exists!");
 		}
 
