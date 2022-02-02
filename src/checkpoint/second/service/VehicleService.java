@@ -9,6 +9,12 @@ import java.util.Scanner;
 
 public class VehicleService {
 
+	VehicleRepository vehicleRepository = new VehicleRepository();
+
+	public Vehicle[] listAll() {
+		return vehicleRepository.listAll();
+	}
+
 	public Vehicle[] searchByAutomaker(Vehicle[] vehicles, String name) {
 		Vehicle[] newVehicles = new Vehicle[vehicles.length];
 		int i = 0;
@@ -34,7 +40,7 @@ public class VehicleService {
 		return newVehicle;
 	}
 
-	public Vehicle[] addVehicle(Vehicle[] vehicles, Vehicle vehicle) {
+	public void addVehicle(Vehicle[] vehicles, Vehicle vehicle) {
 		Vehicle checkByModel = searchByModel(vehicles, vehicle.getModel());
 		if (Objects.nonNull(checkByModel.getModel())) {
 			throw new IllegalArgumentException("This vehicle model already exists!");
@@ -45,8 +51,7 @@ public class VehicleService {
 			newVehicles[i] = vehicles[i];
 		}
 		newVehicles[vehicles.length] = vehicle;
-
-		return newVehicles;
+		vehicleRepository.setVehicles(newVehicles);
 	}
 
 	public void updateVehicle(Vehicle[] vehicles, Vehicle vehicle) {
@@ -57,20 +62,20 @@ public class VehicleService {
 		}
 	}
 
-	public Vehicle[] deleteVehicleByModel(Vehicle[] vehicles, int position) {
+	public void deleteVehicleByModel(Vehicle[] vehicles, int position) {
 		if (!(position >= 0 && position < vehicles.length)) {
 			throw new IllegalArgumentException("Vehicle not found!");
 		}
 
-		for (int i = position; i < vehicles.length-1; i++) {
-			vehicles[i] = vehicles[i+1];
+		for (int i = position; i < vehicles.length - 1; i++) {
+			vehicles[i] = vehicles[i + 1];
 		}
 
 		Vehicle[] newVehicles = new Vehicle[vehicles.length - 1];
-		for (int i = 0; i < vehicles.length-1; i++) {
+		for (int i = 0; i < vehicles.length - 1; i++) {
 			newVehicles[i] = vehicles[i];
 		}
-		return newVehicles;
+		vehicleRepository.setVehicles(newVehicles);
 	}
 
 	public int getPosition(Vehicle[] vehicles, String model) {
@@ -124,5 +129,10 @@ public class VehicleService {
 	}
 
 	public VehicleService(VehicleRepository vehicleRepository) {
+		this.vehicleRepository = vehicleRepository;
 	}
+
+	public VehicleService() {
+	}
+
 }

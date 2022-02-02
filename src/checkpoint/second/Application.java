@@ -2,7 +2,7 @@ package checkpoint.second;
 
 import checkpoint.second.model.Automaker;
 import checkpoint.second.model.Vehicle;
-import checkpoint.second.repository.VehicleRepository;
+import checkpoint.second.service.AutomakerService;
 import checkpoint.second.service.VehicleService;
 import checkpoint.second.validation.AutomakerValidation;
 
@@ -11,45 +11,9 @@ import java.util.Scanner;
 
 public class Application {
 	public static void main(String[] args) {
-		Automaker gm = new Automaker("GM");
-		Automaker hyundai = new Automaker("Hyundai");
-		Automaker volkswagen = new Automaker("Volkswagen");
-		Automaker audi = new Automaker("Audi");
-		Automaker mercedes = new Automaker("Mercedes");
-		Automaker peugeot = new Automaker("Peugeot");
 
-		Automaker[] automakers = {gm, hyundai, volkswagen, audi, mercedes, peugeot};
-
-		Vehicle suburban = new Vehicle("Suburban", "White", "1952", gm);
-		Vehicle malibu = new Vehicle("Malibu", "Black", "1966", gm);
-		Vehicle silverado = new Vehicle("Silverado", "Red", "1999", gm);
-		Vehicle azera = new Vehicle("Azera", "White", "2000", hyundai);
-		Vehicle sonata = new Vehicle("Sonata", "Black", "2002", hyundai);
-		Vehicle veloster = new Vehicle("Veloster", "Red", "2004", hyundai);
-		Vehicle golf = new Vehicle("Golf", "White", "2008", volkswagen);
-		Vehicle jetta = new Vehicle("Jetta", "Black", "2010", volkswagen);
-		Vehicle polo = new Vehicle("Polo", "Red", "2012", volkswagen);
-		Vehicle a4 = new Vehicle("A4", "White", "2014", audi);
-		Vehicle q7 = new Vehicle("Q7", "Black", "2016", audi);
-		Vehicle r8 = new Vehicle("R8", "Red", "2018", audi);
-		Vehicle c180 = new Vehicle("C 180", "White", "2020", mercedes);
-		Vehicle c200 = new Vehicle("C 200", "Black", "2022", mercedes);
-		Vehicle gla200 = new Vehicle("GLA200", "Red", "2024", mercedes);
-		Vehicle p206 = new Vehicle("P 206", "White", "2001", peugeot);
-		Vehicle p208 = new Vehicle("P 208", "Black", "2003", peugeot);
-		Vehicle p2008 = new Vehicle("P 2008", "Red", "2005", peugeot);
-
-		Vehicle[] vehicles = {
-				suburban, malibu, silverado,
-				azera, sonata, veloster,
-				golf, jetta, polo,
-				a4, q7, r8,
-				c180, c200, gla200,
-				p206, p208, p2008
-		};
-
-		final VehicleRepository vehicleRepository = new VehicleRepository(vehicles);
-		final VehicleService vehicleService = new VehicleService(vehicleRepository);
+		AutomakerService automakerService = new AutomakerService();
+		VehicleService vehicleService = new VehicleService();
 
 		while (true) {
 
@@ -70,10 +34,14 @@ public class Application {
 			if (selectedNumber == 0)
 				break;
 
+			Automaker[] automakers = automakerService.listAll();
+			Vehicle[] vehicles = vehicleService.listAll();
+
 			switch (selectedNumber) {
 				case 0:
 					break;
 				case 1:
+
 					vehicleService.printAutomakerName(automakers);
 
 					int selectedAutomaker = in.nextInt();
@@ -81,15 +49,15 @@ public class Application {
 					String automakerSelected = automakers[selectedAutomaker - 1].getName();
 					System.out.println(automakerSelected);
 
-					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicleRepository.getVehicles(), automakerSelected);
+					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicles, automakerSelected);
 					vehicleService.printVehicleModel(vehicleSelected);
 					continue;
 				case 2:
-					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
+					vehicleService.printVehicleModel(vehicles);
 
 					in.nextLine();
 					String modelToSearch = in.nextLine();
-					Vehicle vehicleModelSearched = vehicleService.searchByModel(vehicleRepository.getVehicles(), modelToSearch);
+					Vehicle vehicleModelSearched = vehicleService.searchByModel(vehicles, modelToSearch);
 
 					if (Objects.isNull(vehicleModelSearched.getModel())) {
 						System.out.println("Vehicle not found!");
@@ -106,14 +74,14 @@ public class Application {
 						break;
 					}
 
-					vehicleRepository.setVehicles(vehicleService.addVehicle(vehicles, newVehicle));
+					vehicleService.addVehicle(vehicles, newVehicle);
 					continue;
 				case 4:
-					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
+					vehicleService.printVehicleModel(vehicles);
 
 					in.nextLine();
 					String modelToUpdate = in.nextLine();
-					Vehicle searchVehicle = vehicleService.searchByModel(vehicleRepository.getVehicles(), modelToUpdate);
+					Vehicle searchVehicle = vehicleService.searchByModel(vehicles, modelToUpdate);
 
 					if (Objects.isNull(searchVehicle)) {
 						System.out.println("Vehicle not found!");
@@ -122,17 +90,16 @@ public class Application {
 
 					searchVehicle.prettyPrint();
 					Vehicle newVehicleToUpdate = vehicleService.getNewVehicleToUpdate(searchVehicle);
-					vehicleService.updateVehicle(vehicleRepository.getVehicles(), newVehicleToUpdate);
+					vehicleService.updateVehicle(vehicles, newVehicleToUpdate);
 					continue;
 				case 5:
-					vehicleService.printVehicleModel(vehicleRepository.getVehicles());
+					vehicleService.printVehicleModel(vehicles);
 					System.out.println("Which vehicle do you want to delete?");
 
 					in.nextLine();
 					String modelToDelete = in.nextLine();
-					int position = vehicleService.getPosition(vehicleRepository.getVehicles(), modelToDelete);
-					Vehicle[] vehicleUpdate = vehicleService.deleteVehicleByModel(vehicleRepository.getVehicles(), position);
-					vehicleRepository.setVehicles(vehicleUpdate);
+					int position = vehicleService.getPosition(vehicles, modelToDelete);
+					vehicleService.deleteVehicleByModel(vehicles, position);
 					continue;
 				default:
 					throw new IllegalStateException("Unexpected value: " + selectedNumber);
