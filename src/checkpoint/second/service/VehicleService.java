@@ -15,7 +15,8 @@ public class VehicleService {
 		return vehicleRepository.listAll();
 	}
 
-	public Vehicle[] searchByAutomaker(Vehicle[] vehicles, String name) {
+	public Vehicle[] searchByAutomaker(String name) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
 		Vehicle[] newVehicles = new Vehicle[vehicles.length];
 		int i = 0;
 		for (Vehicle vehicle : vehicles) {
@@ -27,7 +28,8 @@ public class VehicleService {
 		return newVehicles;
 	}
 
-	public Vehicle searchByModel(Vehicle[] vehicles, String model) {
+	public Vehicle searchByModel(String model) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
 		Vehicle newVehicle = new Vehicle();
 		for (Vehicle vehicle : vehicles) {
 			if (vehicle.getModel().equalsIgnoreCase(model)) {
@@ -40,8 +42,9 @@ public class VehicleService {
 		return newVehicle;
 	}
 
-	public void addVehicle(Vehicle[] vehicles, Vehicle vehicle) {
-		Vehicle checkByModel = searchByModel(vehicles, vehicle.getModel());
+	public void addVehicle(Vehicle vehicle) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
+		Vehicle checkByModel = searchByModel(vehicle.getModel());
 		if (Objects.nonNull(checkByModel.getModel())) {
 			throw new IllegalArgumentException("This vehicle model already exists!");
 		}
@@ -54,7 +57,8 @@ public class VehicleService {
 		vehicleRepository.setVehicles(newVehicles);
 	}
 
-	public void updateVehicle(Vehicle[] vehicles, Vehicle vehicle) {
+	public void updateVehicle(Vehicle vehicle) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
 		for (int i = 0; i < vehicles.length; i++) {
 			if (vehicles[i].getModel().equalsIgnoreCase(vehicle.getModel())) {
 				vehicles[i] = vehicle;
@@ -62,7 +66,8 @@ public class VehicleService {
 		}
 	}
 
-	public void deleteVehicleByModel(Vehicle[] vehicles, int position) {
+	public void deleteVehicleByModel(int position) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
 		if (!(position >= 0 && position < vehicles.length)) {
 			throw new IllegalArgumentException("Vehicle not found!");
 		}
@@ -78,21 +83,14 @@ public class VehicleService {
 		vehicleRepository.setVehicles(newVehicles);
 	}
 
-	public int getPosition(Vehicle[] vehicles, String model) {
+	public int getPosition(String model) {
+		Vehicle[] vehicles = vehicleRepository.listAll();
 		for (int i = 0; i < vehicles.length; i++) {
 			if (vehicles[i].getModel().equalsIgnoreCase(model)) {
 				return i;
 			}
 		}
 		return -1;
-	}
-
-	public void printAutomakerName(Automaker[] automakers) {
-		int index = 1;
-		for (Automaker automaker : automakers) {
-			System.out.printf("%d - %s\n", index, automaker.getName());
-			index++;
-		}
 	}
 
 	public void printVehicleModel(Vehicle[] vehicles) {

@@ -10,4 +10,13 @@ public class AutomakerService {
 	public Automaker[] listAll() {
 		return automakerRepository.listAll();
 	}
+
+	public void printAutomakerName() {
+		Automaker[] automakers = automakerRepository.listAll();
+		int index = 1;
+		for (Automaker automaker : automakers) {
+			System.out.printf("%d - %s\n", index, automaker.getName());
+			index++;
+		}
+	}
 }

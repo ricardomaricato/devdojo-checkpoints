@@ -50,12 +50,7 @@ public class VehicleRepository {
 		this.vehicles = vehicles;
 	}
 
-	public Vehicle[] getVehicles() {
-		return vehicles;
-	}
-
 	public void setVehicles(Vehicle[] vehicles) {
 		this.vehicles = vehicles;
 	}
-
 }

@@ -42,14 +42,14 @@ public class Application {
 					break;
 				case 1:
 
-					vehicleService.printAutomakerName(automakers);
+					automakerService.printAutomakerName();
 
 					int selectedAutomaker = in.nextInt();
 					System.out.println("Available vehicles:");
 					String automakerSelected = automakers[selectedAutomaker - 1].getName();
 					System.out.println(automakerSelected);
 
-					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(vehicles, automakerSelected);
+					Vehicle[] vehicleSelected = vehicleService.searchByAutomaker(automakerSelected);
 					vehicleService.printVehicleModel(vehicleSelected);
 					continue;
 				case 2:
@@ -57,7 +57,7 @@ public class Application {
 
 					in.nextLine();
 					String modelToSearch = in.nextLine();
-					Vehicle vehicleModelSearched = vehicleService.searchByModel(vehicles, modelToSearch);
+					Vehicle vehicleModelSearched = vehicleService.searchByModel(modelToSearch);
 
 					if (Objects.isNull(vehicleModelSearched.getModel())) {
 						System.out.println("Vehicle not found!");
@@ -74,14 +74,14 @@ public class Application {
 						break;
 					}
 
-					vehicleService.addVehicle(vehicles, newVehicle);
+					vehicleService.addVehicle(newVehicle);
 					continue;
 				case 4:
 					vehicleService.printVehicleModel(vehicles);
 
 					in.nextLine();
 					String modelToUpdate = in.nextLine();
-					Vehicle searchVehicle = vehicleService.searchByModel(vehicles, modelToUpdate);
+					Vehicle searchVehicle = vehicleService.searchByModel(modelToUpdate);
 
 					if (Objects.isNull(searchVehicle)) {
 						System.out.println("Vehicle not found!");
@@ -90,7 +90,7 @@ public class Application {
 
 					searchVehicle.prettyPrint();
 					Vehicle newVehicleToUpdate = vehicleService.getNewVehicleToUpdate(searchVehicle);
-					vehicleService.updateVehicle(vehicles, newVehicleToUpdate);
+					vehicleService.updateVehicle(newVehicleToUpdate);
 					continue;
 				case 5:
 					vehicleService.printVehicleModel(vehicles);
@@ -98,8 +98,8 @@ public class Application {
 
 					in.nextLine();
 					String modelToDelete = in.nextLine();
-					int position = vehicleService.getPosition(vehicles, modelToDelete);
-					vehicleService.deleteVehicleByModel(vehicles, position);
+					int position = vehicleService.getPosition(modelToDelete);
+					vehicleService.deleteVehicleByModel(position);
 					continue;
 				default:
 					throw new IllegalStateException("Unexpected value: " + selectedNumber);
